@@ -554,36 +554,82 @@ console.log(firstUniqueChar("aabb"));
 // EXAMPLE 1:  firstUniqueChar("leetcode")  ->  "l"
 // EXAMPLE 2:  firstUniqueChar("swiss")     ->  "w"
 // EXAMPLE 3:  firstUniqueChar("aabb")      ->  ""    (every char repeats)
-
+console.log("--26--");
 // ----- 26. Valid Anagram  (LeetCode 242) -----
 // Write `areAnagrams(a, b)` -> true if b is a rearrangement of a (same letters, same
 // counts). Hint: if lengths differ -> false; count a into an object; walk b subtracting;
 // any count going negative or a missing key -> false.
 // your code here
-
-// console.log(areAnagrams("listen", "silent"));
+function areAnagrams(a, b) {
+  let counts = {};
+  if (a.length !== b.length) {
+    return false;
+  }
+  for (let ch of a) {
+    if (counts[ch] === undefined) counts[ch] = 0;
+    counts[ch]++;
+  }
+  for (let ch of b) {
+    if (counts[ch] === undefined || counts[ch] === 0) {
+      return false;
+    }
+    counts[ch]--;
+  }
+  return true;
+}
+console.log(areAnagrams("listen", "silent"));
+console.log(areAnagrams("hello", "world"));
+console.log(areAnagrams("a", "aa"));
 // EXAMPLE 1:  areAnagrams("listen", "silent")  ->  true
 // EXAMPLE 2:  areAnagrams("hello", "world")    ->  false
 // EXAMPLE 3:  areAnagrams("a", "aa")           ->  false   (different lengths)
+console.log("--27--");
 
 // ----- 27. Can Form a Palindrome  (LeetCode 266 lite) -----
 // Write `canFormPalindrome(word)` -> true if the letters can be rearranged into a
 // palindrome. Rule: at most ONE letter may have an odd count. Hint: build counts,
 // then count how many counts are odd; ok if that total is 0 or 1.
 // your code here
-
-// console.log(canFormPalindrome("aabb"));
+function canFormPalindrome(word) {
+  let counts = {};
+  let oddCounts = 0;
+  for (let ch of word) {
+    if (counts[ch] === undefined) counts[ch] = 0;
+    counts[ch]++;
+  }
+  for (let ch in counts) {
+    if (counts[ch] % 2 !== 0) {
+      oddCounts++;
+    }
+  }
+  return oddCounts <= 1;
+}
+console.log(canFormPalindrome("aabb"));
+console.log(canFormPalindrome("abc"));
+console.log(canFormPalindrome("racecar"));
 // EXAMPLE 1:  canFormPalindrome("aabb")     ->  true    (aabb -> "abba")
 // EXAMPLE 2:  canFormPalindrome("abc")      ->  false   (three odd counts)
 // EXAMPLE 3:  canFormPalindrome("racecar")  ->  true    (only e is odd)
-
+console.log("--28--");
 // ----- 28. Merge Keeping the Max -----
 // Write `mergeMax(a, b)` -> a NEW object with every key from both; when a key is in
 // BOTH, keep the LARGER value. Hint: copy a, then for each key in b use Math.max if the
 // key already exists, else just take b's value.
 // your code here
-
-// console.log(mergeMax({ a: 1, b: 5 }, { a: 3, b: 2, c: 9 }));
+function mergeMax(a, b) {
+  let copyA = { ...a };
+  for (let key in b) {
+    if (copyA[key] !== undefined) {
+      copyA[key] = Math.max(copyA[key], b[key]);
+    } else {
+      copyA[key] = b[key];
+    }
+  }
+  return copyA;
+}
+console.log(mergeMax({ a: 1, b: 5 }, { a: 3, b: 2, c: 9 }));
+console.log(mergeMax({}, { x: 1 }));
+console.log(mergeMax({ k: 4 }, { k: 2 }));
 // EXAMPLE 1:  mergeMax({ a: 1, b: 5 }, { a: 3, b: 2, c: 9 })  ->  { a: 3, b: 5, c: 9 }
 // EXAMPLE 2:  mergeMax({}, { x: 1 })                          ->  { x: 1 }
 // EXAMPLE 3:  mergeMax({ k: 4 }, { k: 2 })                    ->  { k: 4 }
@@ -618,25 +664,50 @@ const SCHOOL = {
     },
   },
 };
+console.log("--29--");
 
 // ----- 29. One student's average (the bottom brick) -----
 // Write `studentAverage(scores)` where scores is a plain { subject: number } object.
 // RETURN the mean of the values. Everything in the next exercise calls this.
 // Hint: total + count in one for...in loop, then total / count (like ex 17).
 // your code here
-
-// console.log(studentAverage({ math: 90, english: 80, science: 70 }));
+function studentAverage(scores) {
+  let total = 0;
+  let count = 0;
+  for (let key in scores) {
+    count++;
+    total += scores[key];
+  }
+  return total / count;
+}
+console.log(studentAverage({ math: 90, english: 80, science: 70 }));
+console.log(studentAverage({ math: 60, english: 60, science: 60 }));
+console.log(studentAverage({ a: 1, b: 2 }));
 // TEST 1:  studentAverage({ math: 90, english: 80, science: 70 })  ->  80
 // TEST 2:  studentAverage({ math: 60, english: 60, science: 60 })  ->  60
 // TEST 3:  studentAverage({ a: 1, b: 2 })                          ->  1.5
+console.log("--30--");
 
 // ----- 30. A class average (CALL studentAverage) -----
 // Write `classAverage(school, classId)` that RETURNS the mean of the students' averages
 // in that class. Loop the students with for...in, CALL studentAverage on each one's
 // scores, total them, divide by the count. This is the COMPOSE finale.
 // your code here
+function classAverage(school, classId) {
+  let students = school.classes[classId].students;
+  let classTotal = 0;
+  let studentCount = 0;
+  for (let studentName in students) {
+    studentCount++;
+    let avg = studentAverage(students[studentName]);
+    classTotal += avg;
+  }
+  return classTotal / studentCount;
+}
+console.log(classAverage(SCHOOL, "jss1"));
+console.log(classAverage(SCHOOL, "jss2"));
+console.log(classAverage({ classes: { x: { students: { p: { a: 10 }, q: { a: 20 } } } } }, "x"));
 
-// console.log(classAverage(SCHOOL, "jss1"));
 // TEST 1:  classAverage(SCHOOL, "jss1")  ->  65    (80 + 50, / 2)
 // TEST 2:  classAverage(SCHOOL, "jss2")  ->  75    (90 + 60, / 2)
 // TEST 3:  classAverage({ classes: { x: { students: { p: { a: 10 }, q: { a: 20 } } } } }, "x")  ->  15
