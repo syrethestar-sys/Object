@@ -17,89 +17,140 @@
    ============================================================ */
 
 /* ---------- STAGE 1: the four button operations ---------- */
+let exerciseNumTen = 1;
 
+function logTask() {
+  console.log("==" + "Дасгал: " + exerciseNumTen);
+  exerciseNumTen++;
+}
+logTask();
 // ----- 1. add -----
 // Write `add(a, b)` that RETURNS a + b.
 // your code here
-
-// console.log(add(2, 3));
+function add(a, b) {
+  return a + b;
+}
+console.log(add(2, 3));
 // TEST 1:  add(2, 3)    ->  5
 // TEST 2:  add(-1, 1)   ->  0
 // TEST 3:  add(10, 0)   ->  10
-
+logTask();
 // ----- 2. subtract -----
 // Write `subtract(a, b)` that RETURNS a - b.
 // your code here
-
-// console.log(subtract(5, 3));
+function subtract(a, b) {
+  return a - b;
+}
+console.log(subtract(5, 3));
 // TEST 1:  subtract(5, 3)   ->  2
 // TEST 2:  subtract(0, 4)   ->  -4
 // TEST 3:  subtract(9, 9)   ->  0
-
+logTask();
 // ----- 3. multiply -----
 // Write `multiply(a, b)` that RETURNS a * b.
 // your code here
-
-// console.log(multiply(4, 3));
+function multiply(a, b) {
+  return a * b;
+}
+console.log(multiply(4, 3));
 // TEST 1:  multiply(4, 3)   ->  12
 // TEST 2:  multiply(7, 0)   ->  0
 // TEST 3:  multiply(-2, 5)  ->  -10
-
+logTask();
 // ----- 4. divide (guard the zero) -----
 // Write `divide(a, b)` that RETURNS a / b — BUT a real calculator must not
 // crash on divide-by-zero. When b is 0, RETURN the string "Error".
 // your code here
-
-// console.log(divide(10, 2));
+function divide(a, b) {
+  if (b === 0) {
+    return "Error";
+  } else {
+    return a / b;
+  }
+}
+console.log(divide(10, 2));
+console.log(divide(7, 0));
 // TEST 1:  divide(10, 2)   ->  5
 // TEST 2:  divide(7, 0)    ->  "Error"
 // TEST 3:  divide(9, 3)    ->  3
 
 /* ---------- STAGE 2: recognizing operators ---------- */
+logTask();
 
 // ----- 5. isOperator -----
 // Write `isOperator(token)` that RETURNS true when token is one of
 // "+", "-", "*", "/".
 // your code here
-
-// console.log(isOperator("+"));
+function isOperator(token) {
+  return token === "+"|| token === "-"||token === "*"||token === "/";
+}
+console.log(isOperator("+"));
+console.log(isOperator("/"));
+console.log(isOperator("9"));
 // TEST 1:  isOperator("+")  ->  true
 // TEST 2:  isOperator("/")  ->  true
 // TEST 3:  isOperator("9")  ->  false
 
 /* ---------- STAGE 3: the heart — apply ONE operation ---------- */
+logTask()
 
 // ----- 6. applyOp (the dispatcher) -----
 // Write `applyOp(a, op, b)` that looks at op and RETURNS the right result by
 // CALLING add / subtract / multiply / divide. If op is not a known operator,
 // RETURN "Error".
 // your code here
-
-// console.log(applyOp(6, "*", 7));
+function applyOp(a,op,b){
+   if(op==="+"){
+      return add(a,b)
+   }else if(op==="-"){
+      return subtract(a,b)
+   }else if(op==="*"){
+      return multiply(a,b)
+   }else if(op==="/"){
+      return divide(a,b)
+   }else{
+      return "Error"
+   }
+}
+console.log(applyOp(6, "*", 7));
+console.log(applyOp(8, "/", 0));
+console.log(applyOp(10, "?", 2));
 // TEST 1:  applyOp(6, "*", 7)   ->  42
 // TEST 2:  applyOp(8, "/", 0)   ->  "Error"
 // TEST 3:  applyOp(10, "?", 2)  ->  "Error"
 
 /* ---------- STAGE 4: reading what the user typed ---------- */
-
+logTask()
 // ----- 7. tokenize -----
 // A calculator gets a flat string like "3 + 4". Write `tokenize(expr)` that
 // RETURNS an array of its pieces split on spaces: ["3", "+", "4"].
 // your code here
-
-// console.log(tokenize("3 + 4"));
+function tokenize(expr){
+   return expr.split(" ")
+}
+console.log(tokenize("3 + 4"));
+console.log(tokenize("12 * 5"));
+console.log(tokenize("8 - 2 + 1"));
 // TEST 1:  tokenize("3 + 4")        ->  ["3", "+", "4"]
 // TEST 2:  tokenize("12 * 5")       ->  ["12", "*", "5"]
 // TEST 3:  tokenize("8 - 2 + 1")    ->  ["8", "-", "2", "+", "1"]
 
 /* ---------- STAGE 5: compute a single "a op b" string ---------- */
-
+logTask()
 // ----- 8. calcOne -----
 // Write `calcOne(expr)` for a 3-token expression like "3 + 4". Tokenize it,
 // turn the two ends into numbers, and RETURN applyOp(left, op, right).
 // your code here
-
-// console.log(calcOne("3 + 4"));
+function calcOne(expr){
+   let tokens = expr.split(" ")
+   let left = Number(tokens[0])
+   let right = Number(tokens.length-1)
+   let op = tokens[1]
+   return applyOp(left, op, right)
+}
+console.log(calcOne("3 + 4"));
+console.log(calcOne("10 + 0"));
+console.log(calcOne("6 * 7"));
 // TEST 1:  calcOne("3 + 4")    ->  7
 // TEST 2:  calcOne("10 / 0")   ->  "Error"
 // TEST 3:  calcOne("6 * 7")    ->  42
